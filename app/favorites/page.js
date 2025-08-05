@@ -6,11 +6,13 @@ import useAuth from '@/hooks/useAuth';
 import GameCard from '@/components/GameCard';
 import ChartComponent from '@/components/ChartComponent';
 import FavoritesHeader from '@/components/FavoritesHeader';
+import GameDetail from '@/components/GameDetail'; 
 
 export default function FavoritesPage() {
   const { user } = useAuth();
   const [favorites, setFavorites] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [selectedGameId, setSelectedGameId] = useState(null); 
 
   useEffect(() => {
     if (!user) return;
@@ -20,7 +22,7 @@ export default function FavoritesPage() {
     const unsubscribe = onSnapshot(colRef, (snapshot) => {
       const data = snapshot.docs.map((doc) => doc.data());
       setFavorites(data);
-      setFiltered(data); // 預設顯示全部
+      setFiltered(data);
     });
 
     return () => unsubscribe();
@@ -40,11 +42,18 @@ export default function FavoritesPage() {
     <>
       <FavoritesHeader onSearch={handleSearch} />
       <ChartComponent games={filtered} />
+
       <div style={styles.grid}>
         {filtered.map((game) => (
-          <GameCard key={game.id} game={game} />
+          <div key={game.id} onClick={() => setSelectedGameId(game.id)}>
+            <GameCard game={game} />
+          </div>
         ))}
       </div>
+
+      {selectedGameId && (
+        <GameDetail gameId={selectedGameId} onClose={() => setSelectedGameId(null)} />
+      )}
     </>
   );
 }

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 const API_KEY = process.env.NEXT_PUBLIC_RAWG_API_KEY;
 
-export default function useGameData(query = '') {
+export default function useGameData(query = '', platform = '', genre = '') {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -11,9 +11,13 @@ export default function useGameData(query = '') {
     const fetchGames = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `https://api.rawg.io/api/games?key=${API_KEY}&page_size=12&search=${query}`
-        );
+        let url = `https://api.rawg.io/api/games?key=${API_KEY}&page_size=12`;
+
+        if (query) url += `&search=${encodeURIComponent(query)}`;
+        if (platform) url += `&platforms=${platform}`;
+        if (genre) url += `&genres=${genre}`;
+
+        const res = await fetch(url);
         const data = await res.json();
 
         const simplified = data.results.map((game) => ({
@@ -32,7 +36,7 @@ export default function useGameData(query = '') {
     };
 
     fetchGames();
-  }, [query]);
+  }, [query ?? '', platform ?? '', genre ?? '']);
 
   return { games, loading };
 }

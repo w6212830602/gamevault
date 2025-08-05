@@ -5,11 +5,23 @@ import GameList from '../components/GameList';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPlatform, setSelectedPlatform] = useState('');
+  const [selectedGenre, setSelectedGenre] = useState('');
 
   return (
     <>
-      <Header onSearch={setSearchQuery} />
-      <GameList searchQuery={searchQuery} />
+      <Header
+        onSearch={setSearchQuery}
+        selectedPlatform={selectedPlatform}
+        onPlatformChange={setSelectedPlatform}
+        selectedGenre={selectedGenre}
+        onGenreChange={setSelectedGenre}
+      />
+      <GameList
+        searchQuery={searchQuery}
+        platform={selectedPlatform}
+        genre={selectedGenre}
+      />
     </>
   );
 }

@@ -45,10 +45,11 @@ const styles = {
     fontSize: '1rem',
     margin: '10px 0 4px',
     fontWeight: 'bold',
+    color: '#111',
   },
   platform: {
     fontSize: '0.9rem',
-    color: '#555',
+    color: '#333',
   },
   favorite: {
     marginTop: '10px',

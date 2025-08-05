@@ -63,6 +63,7 @@ const styles = {
     maxHeight: '80vh',
     overflowY: 'auto',
     position: 'relative',
+    color: '#111',
   },
   closeBtn: {
     marginTop: '20px',

@@ -1,9 +1,15 @@
 'use client';
 import { useState } from 'react';
 import useAuth from '../hooks/useAuth';
-import Link from 'next/link'
+import Link from 'next/link';
 
-export default function Header({ onSearch }) {
+export default function Header({
+  onSearch,
+  selectedPlatform,
+  selectedGenre,
+  onPlatformChange,
+  onGenreChange,
+}) {
   const [searchQuery, setSearchQuery] = useState('');
   const { user, login, logout } = useAuth();
 
@@ -17,6 +23,30 @@ export default function Header({ onSearch }) {
     <header style={styles.header}>
       <div style={styles.logo}>🎮 GameVault</div>
 
+      <select
+        value={selectedPlatform}
+        onChange={(e) => onPlatformChange(e.target.value)}
+        style={styles.select}
+      >
+        <option value="">All Platforms</option>
+        <option value="4">PC</option>
+        <option value="187">PlayStation 5</option>
+        <option value="186">Xbox Series X</option>
+        <option value="7">Nintendo Switch</option>
+      </select>
+
+      <select
+        value={selectedGenre}
+        onChange={(e) => onGenreChange(e.target.value)}
+        style={styles.select}
+      >
+        <option value="">All Genres</option>
+        <option value="action">Action</option>
+        <option value="shooter">Shooter</option>
+        <option value="rpg">RPG</option>
+        <option value="adventure">Adventure</option>
+      </select>
+
       <input
         type="text"
         placeholder="Search games..."
@@ -26,10 +56,10 @@ export default function Header({ onSearch }) {
       />
 
       {user && (
-  <Link href="/favorites" style={styles.favoritesLink}>
-    ❤️ My Favorites
-  </Link>
-)}
+        <Link href="/favorites" style={styles.favoritesLink}>
+          ❤️ My Favorites
+        </Link>
+      )}
 
       {user ? (
         <div style={styles.userSection}>
@@ -54,13 +84,22 @@ const styles = {
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  logo: { fontSize: '1.5rem', fontWeight: 'bold' },
+  logo: {
+    fontSize: '1.5rem',
+    fontWeight: 'bold',
+  },
   searchInput: {
     flex: 1,
     minWidth: '200px',
     padding: '8px 12px',
     borderRadius: '4px',
     border: '1px solid #ccc',
+  },
+  select: {
+    padding: '8px 12px',
+    borderRadius: '4px',
+    border: '1px solid #ccc',
+    minWidth: '160px',
   },
   button: {
     padding: '8px 16px',
@@ -78,20 +117,14 @@ const styles = {
   userName: {
     fontWeight: 'bold',
   },
-
   favoritesLink: {
-  padding: '8px 16px',
-  backgroundColor: '#10b981', 
-  color: 'white',
-  textDecoration: 'none',
-  borderRadius: '6px',
-  fontWeight: 'bold',
-  transition: 'all 0.2s',
-  marginLeft: '8px',
-},
-
-favoritesLinkHover: {
-  backgroundColor: '#059669',
-},
-
+    padding: '8px 16px',
+    backgroundColor: '#10b981',
+    color: 'white',
+    textDecoration: 'none',
+    borderRadius: '6px',
+    fontWeight: 'bold',
+    transition: 'all 0.2s',
+    marginLeft: '8px',
+  },
 };
